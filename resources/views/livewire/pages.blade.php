@@ -15,7 +15,7 @@
             <div class="mt-4">
                 <x-jet-label for="title" value="{{ __('Title') }}" />
                 <x-jet-input id="title" class="block mt-1 w-full" type="text" wire:model.debounce.500ms="title" />
-                @error('title') @enderror
+                @error('title') <span class="error">{{$message}}</span> @enderror
             </div>
             <div class="mt-4">
                 <x-jet-label for="slug" value="{{ __('Slug') }}" />
@@ -23,15 +23,16 @@
                     <span class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">
                         http://localhost:8000/
                     </span>
-                    <x-jet-input id="title" 
+                    <x-jet-input id="slug" 
                         class="block mt-1 w-full  form-input flex-1 rounded-none transition duration-150 ease-in-out sm:text-sm sm:leading-5" 
                         style="border-top-left-radius: none !important; border-bottom-left-radius: none !important;" 
                         placeholder="url-slug" type="text" 
                         wire:model.debounce.500ms="slug" />
                 </div>
+                @error('slug') <span class="error">{{$message}}</span> @enderror
             </div>
             <div class="mt-4">
-                <x-jet-label for="title" value="{{ __('Content') }}" />
+                <x-jet-label for="content" value="{{ __('Content') }}" />
                 <div class="rounded-md shadow-sm">
                     <div class="mt-1 bg-white">
                         <div class="body-content" wire:ignore>
@@ -44,6 +45,7 @@
                         </div>
                     </div>
                 </div>
+                @error('content') <span class="error">{{$message}}</span> @enderror
             </div>
             
         </x-slot>

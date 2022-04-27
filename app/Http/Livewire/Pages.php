@@ -17,6 +17,16 @@ class Pages extends Component
             'content' => 'required'
         ];
     }
+    
+    /**
+     * Runs every time the title is rendered/updated.
+     *
+     * @param  mixed $value
+     * @return void
+     */
+    public function updatedTitle($value){
+        $this->genetateSlug($value);
+    }
 
     /**
      * The create function.
@@ -24,6 +34,7 @@ class Pages extends Component
      * @return void
      */
     public function create(){
+        $this->validate();
         Page::create($this->modelData());
         $this->modalFormVisible = false;
         $this->resetVars();
@@ -61,6 +72,18 @@ class Pages extends Component
      */
     public function resetVars(){
         $this->slug = $this->title = $this->content = null;
+    }
+    
+    /**
+     * Genetaes a url slug 
+     * based on the title.
+     *
+     * @param  mixed $value
+     * @return void
+     */
+    private function genetateSlug($value){
+        $process1 = str_replace(' ', '-', strtolower($value));
+        $this->slug = $process1;
     }
     
     /**
