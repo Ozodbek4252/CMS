@@ -39,6 +39,16 @@ class Pages extends Component
         $this->modalFormVisible = false;
         $this->resetVars();
     }
+    
+    /**
+     * The read function.
+     *
+     * @return void
+     */
+    public function read(){
+        $pages = Page::all();
+        return $pages;
+    }
 
     /**
      * Shows the form modal
@@ -93,6 +103,8 @@ class Pages extends Component
      */
     public function render()
     {
-        return view('livewire.pages');
+        return view('livewire.pages', [
+            'data' => $this->read(),
+        ]);
     }
 }

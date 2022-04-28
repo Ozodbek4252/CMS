@@ -5,6 +5,34 @@
         </x-jet-button>
     </div>
 
+    {{-- The data table --}}
+    <table class="w-full divide-y divide-gray-200">
+        <thead>
+            <tr>
+                <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Title</th>
+                <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Link</th>
+                <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Content</th>
+                <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider"></th>
+            </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+            @if($data->count())
+                @foreach($data as $item)
+                    <tr>
+                        <td class="px-6 py-4 text-sm whitespace-no-wrap">Dummy Title</td>
+                        <td class="px-6 py-4 text-sm whitespace-no-wrap">Dummy Link</td>
+                        <td class="px-6 py-4 text-sm whitespace-no-wrap">Dummy Content</td>
+                        <td class="px-6 py-4 text-right text-sm">Buttons</td>
+                    </tr>
+                @endforeach
+            @else
+                    <tr>
+                        <td class="px-6 py-4 text-sm whitespace-no-wrap" colspan="4">No Results Found</td>
+                    </tr>
+            @endif
+        </tbody>
+    </table>
+
     {{-- Modal Form --}}
     <x-jet-dialog-modal wire:model="modalFormVisible">
         <x-slot name="title">
