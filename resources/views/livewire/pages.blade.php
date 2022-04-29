@@ -5,7 +5,11 @@
         </x-jet-button>
     </div>
 
+
     {{-- The data table --}}
+    
+
+
     <table class="w-full divide-y divide-gray-200">
         <thead>
             <tr>
@@ -39,6 +43,8 @@
             @endif
         </tbody>
     </table>
+
+    {{ $data->links() }}
 
     {{-- Modal Form --}}
     <x-jet-dialog-modal wire:model="modalFormVisible">

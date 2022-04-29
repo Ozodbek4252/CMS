@@ -5,9 +5,11 @@ namespace App\Http\Livewire;
 use Livewire\Component;
 use App\Models\Page;
 use Illuminate\Validation\Rule;
+use Livewire\WithPagination; 
 
 class Pages extends Component
 {
+    use WithPagination;
     public $modalFormVisible = false, $slug, $title, $content, $modelId;
         
     public function rules(){
@@ -65,6 +67,7 @@ class Pages extends Component
     public function createShowModal(){
         $this->resetValidation();
         $this->resetVars();
+
         $this->modalFormVisible = true;
     }
     
