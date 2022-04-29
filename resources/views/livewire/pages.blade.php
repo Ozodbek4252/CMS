@@ -19,10 +19,17 @@
             @if($data->count())
                 @foreach($data as $item)
                     <tr>
-                        <td class="px-6 py-4 text-sm whitespace-no-wrap">Dummy Title</td>
-                        <td class="px-6 py-4 text-sm whitespace-no-wrap">Dummy Link</td>
-                        <td class="px-6 py-4 text-sm whitespace-no-wrap">Dummy Content</td>
-                        <td class="px-6 py-4 text-right text-sm">Buttons</td>
+                        <td class="px-6 py-4 text-sm whitespace-no-wrap">{{ $item->title }}</td>
+                        <td class="px-6 py-4 text-sm whitespace-no-wrap">{{ $item->slug }}</td>
+                        <td class="px-6 py-4 text-sm whitespace-no-wrap">{!! $item-> content !!}</td>
+                        <td class="px-6 py-4 text-right text-sm">
+                            <x-jet-button wire:click="updateShowModal({{ $item->id }})">
+                                {{ __('Update') }}
+                            </x-jet-button>
+                            <x-jet-danger-button wire:click="createShowModal">
+                                {{ __('Delete') }}
+                            </x-jet-danger-button>
+                        </td>
                     </tr>
                 @endforeach
             @else
@@ -36,7 +43,7 @@
     {{-- Modal Form --}}
     <x-jet-dialog-modal wire:model="modalFormVisible">
         <x-slot name="title">
-            {{ __('Save Page') }}
+            {{ __('Save Page') }} {{ $modelId }}
         </x-slot>
 
         <x-slot name="content">
@@ -83,9 +90,17 @@
                 {{ __('Cancel') }}
             </x-jet-secondary-button>
 
-            <x-jet-button class="ml-3" wire:click="create()" wire:loading.attr="disabled">
-                {{ __('Save') }}
-            </x-jet-button>
+            @if($modelId)
+                <x-jet-button class="ml-3" wire:click="update()" wire:loading.attr="disabled">
+                    {{ __('Update') }}
+                </x-jet-button>
+            @else
+                <x-jet-button class="ml-3" wire:click="create()" wire:loading.attr="disabled">
+                    {{ __('Create') }}
+                </x-jet-button>
+            @endif
+
+            
         </x-slot>
     </x-jet-dialog-modal>
 </div>

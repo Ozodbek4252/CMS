@@ -8,7 +8,7 @@ use Illuminate\Validation\Rule;
 
 class Pages extends Component
 {
-    public $modalFormVisible = false, $slug, $title, $content;
+    public $modalFormVisible = false, $slug, $title, $content, $modelId;
         
     public function rules(){
         return [
@@ -50,6 +50,12 @@ class Pages extends Component
         return $pages;
     }
 
+    public function update(){
+        $this->validate();
+        Page::find($this->modelId)->update($this->modelData());
+        $this->modalFormVisible = false;
+    }
+
     /**
      * Shows the form modal
      * of the create function.
@@ -57,9 +63,40 @@ class Pages extends Component
      * @return void
      */
     public function createShowModal(){
+        $this->resetValidation();
+        $this->resetVars();
         $this->modalFormVisible = true;
     }
     
+    /**
+     * Shows the form modal
+     * in update mode.
+     *
+     * @param  mixed $id
+     * @return void
+     */
+    public function updateShowModal($id){
+        $this->resetValidation();
+        $this->resetVars();
+        $this->modelId = $id;
+        $this->modalFormVisible = true;
+        $this->loadModal();
+    }
+    
+    /**
+     * Loads the modal data
+     * of this component.
+     *
+     * @return void
+     */
+    public function loadModal(){
+        $data = Page::find($this->modelId);
+        $this->title = $data->title;
+        $this->slug = $data->slug;
+        $this->content = $data->content;
+
+    }
+        
     /**
      * The data for the model mapped 
      * in this component.
@@ -80,8 +117,8 @@ class Pages extends Component
      *
      * @return void
      */
-    public function resetVars(){
-        $this->slug = $this->title = $this->content = null;
+    public function resetVars(){ 
+        $this->slug = $this->title = $this->content = $this->modelId = null;
     }
     
     /**
