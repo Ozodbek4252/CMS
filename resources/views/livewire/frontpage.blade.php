@@ -1,3 +1,4 @@
 <div>
-    {{-- Stop trying to control. --}}
+    <h1>{{ $title }}</h1>
+    {!! $content !!}
 </div>

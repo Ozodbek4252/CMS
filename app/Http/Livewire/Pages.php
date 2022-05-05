@@ -10,16 +10,32 @@ use Livewire\WithPagination;
 class Pages extends Component
 {
     use WithPagination;
-    public $modalFormVisible = false, $slug, $title, $content, $modelId;
+    public 
+        $modalFormVisible = false, 
+        $modalConfirmDeleteVisible = false, 
+        $slug, 
+        $title, 
+        $content,
+        $modelId;
         
     public function rules(){
         return [
             'title' => 'required',
-            'slug' => ['required', Rule::unique('pages', 'slug')],
+            'slug' => ['required', Rule::unique('pages', 'slug')->ignore($this->modelId)],
             'content' => 'required'
         ];
     }
     
+    /**
+     * The livewire mount function
+     *
+     * @return void
+     */
+    public function mount(){
+        // Reset the pagination after reloading the page
+        $this->resetPage();
+    }
+
     /**
      * Runs every time the title is rendered/updated.
      *
@@ -48,16 +64,31 @@ class Pages extends Component
      * @return void
      */
     public function read(){
-        $pages = Page::all();
+        $pages = Page::paginate(2);
         return $pages;
     }
-
+    
+    /**
+     * the update function.
+     *
+     * @return void
+     */
     public function update(){
         $this->validate();
         Page::find($this->modelId)->update($this->modelData());
         $this->modalFormVisible = false;
     }
-
+    
+    /**
+     * The delete function.
+     *
+     * @return void
+     */
+    public function delete(){
+        Page::find($this->modelId)->delete();
+        $this->modalConfirmDeleteVisible = false;
+        $this->resetPage();
+    }
     /**
      * Shows the form modal
      * of the create function.
@@ -84,6 +115,17 @@ class Pages extends Component
         $this->modelId = $id;
         $this->modalFormVisible = true;
         $this->loadModal();
+    }
+    
+    /**
+     * Shows the delete confirmation modal.
+     *
+     * @param  mixed $id
+     * @return void
+     */
+    public function deleteShowModal($id){
+        $this->modelId = $id;
+        $this->modalConfirmDeleteVisible = true;
     }
     
     /**

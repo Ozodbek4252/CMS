@@ -7,49 +7,66 @@
 
 
     {{-- The data table --}}
+    <div class="flex flex-col">
+        <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+            <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                    <table class="w-full divide-y divide-gray-200">
+                        <thead>
+                            <tr>
+                                <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Title</th>
+                                <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Link</th>
+                                <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Content</th>
+                                <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider"></th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            @if($data->count())
+                                @foreach($data as $item)
+                                    <tr>
+                                        <td class="px-6 py-4 text-sm whitespace-no-wrap">{{ $item->title }}</td>
+                                        <td class="px-6 py-4 text-sm whitespace-no-wrap">
+                                            <a 
+                                                href="{{ URL::to('/'.$item->slug) }}" 
+                                                target="_blank"
+                                                class="text-indigo-600 hover:text-indigo-900"
+                                                >
+                                                {{ $item->slug }}
+                                            </a>
+                                        </td>
+                                        <td class="px-6 py-4 text-sm whitespace-no-wrap">{!! $item-> content !!}</td>
+                                        <td class="px-6 py-4 text-right text-sm">
+                                            <x-jet-button wire:click="updateShowModal({{ $item->id }})">
+                                                {{ __('Update') }}
+                                            </x-jet-button>
+                                            <x-jet-danger-button wire:click="deleteShowModal({{ $item->id }})">
+                                                {{ __('Delete') }}
+                                            </x-jet-danger-button>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @else
+                                    <tr>
+                                        <td class="px-6 py-4 text-sm whitespace-no-wrap" colspan="4">No Results Found</td>
+                                    </tr>
+                            @endif
+                        </tbody>
+                    </table>
+                </div>
+                <br/>
+                {{ $data->links() }}
+            </div>
+        </div>
+    </div>
+
+
     
 
-
-    <table class="w-full divide-y divide-gray-200">
-        <thead>
-            <tr>
-                <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Title</th>
-                <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Link</th>
-                <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Content</th>
-                <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider"></th>
-            </tr>
-        </thead>
-        <tbody class="bg-white divide-y divide-gray-200">
-            @if($data->count())
-                @foreach($data as $item)
-                    <tr>
-                        <td class="px-6 py-4 text-sm whitespace-no-wrap">{{ $item->title }}</td>
-                        <td class="px-6 py-4 text-sm whitespace-no-wrap">{{ $item->slug }}</td>
-                        <td class="px-6 py-4 text-sm whitespace-no-wrap">{!! $item-> content !!}</td>
-                        <td class="px-6 py-4 text-right text-sm">
-                            <x-jet-button wire:click="updateShowModal({{ $item->id }})">
-                                {{ __('Update') }}
-                            </x-jet-button>
-                            <x-jet-danger-button wire:click="createShowModal">
-                                {{ __('Delete') }}
-                            </x-jet-danger-button>
-                        </td>
-                    </tr>
-                @endforeach
-            @else
-                    <tr>
-                        <td class="px-6 py-4 text-sm whitespace-no-wrap" colspan="4">No Results Found</td>
-                    </tr>
-            @endif
-        </tbody>
-    </table>
-
-    {{ $data->links() }}
 
     {{-- Modal Form --}}
     <x-jet-dialog-modal wire:model="modalFormVisible">
         <x-slot name="title">
-            {{ __('Save Page') }} {{ $modelId }}
+            {{ __('Save Page') }}
         </x-slot>
 
         <x-slot name="content">
@@ -107,6 +124,27 @@
             @endif
 
             
+        </x-slot>
+    </x-jet-dialog-modal>
+
+    {{-- The Delete Modal --}}
+    <x-jet-dialog-modal wire:model="modalConfirmDeleteVisible">
+        <x-slot name="title">
+            {{ __('Delete Page') }}
+        </x-slot>
+
+        <x-slot name="content">
+            {{ __('Are you sure you want to delete this page? Once the page is deleted, all of its resources and data will be permanently deleted.') }}
+        </x-slot>
+
+        <x-slot name="footer">
+            <x-jet-secondary-button wire:click="$toggle('modalConfirmDeleteVisible')" wire:loading.attr="disabled">
+                {{ __('Cancel') }}
+            </x-jet-secondary-button>
+
+            <x-jet-danger-button class="ml-3" wire:click="delete" wire:loading.attr="disabled">
+                {{ __('Delete Page') }}
+            </x-jet-danger-button>
         </x-slot>
     </x-jet-dialog-modal>
 </div>

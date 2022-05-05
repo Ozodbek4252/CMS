@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Livewire\Frontpage;
 
 /*
 |--------------------------------------------------------------------------
@@ -12,10 +13,6 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get('/', function () {
-    return view('welcome');
-});
 
 Route::group(['middleware'=>[
     'auth:sanctum',
@@ -32,3 +29,9 @@ Route::group(['middleware'=>[
     })->name('pages');
 
 });
+
+Route::get('/{urlslug}', Frontpage::class);
+Route::get('/', Frontpage::class);
+
+
+
